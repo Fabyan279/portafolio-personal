@@ -1,0 +1,2 @@
+git add .; git commit -m "actualizo precios del catalogo"; git push
+este comando es para ejecutar todo y guardarlo.
