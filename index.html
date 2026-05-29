@@ -7,6 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230d0d1f'/><polygon points='4,10 4,22 14,16' fill='%236c63ff'/><rect x='17' y='19.5' width='11' height='3' rx='1.5' fill='%2300d4ff'/></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
     /* ─── Reset & Base ─── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -212,6 +213,7 @@
     @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(6px)} }
 
     @keyframes fadeSlideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     /* ─── Sections ─── */
     section { padding: 6rem 5%; }
@@ -943,17 +945,23 @@
             <input class="form-input" id="femail" type="email" placeholder="tu@email.com" required />
           </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="fservice">Servicio de interés</label>
-          <select class="form-select" id="fservice">
-            <option value="">Selecciona un servicio...</option>
-            <option value="web">Desarrollo Web</option>
-            <option value="ui">Diseño UI/UX</option>
-            <option value="graphic">Diseño Gráfico</option>
-            <option value="landing">Landing Page</option>
-            <option value="seo">Optimización / SEO</option>
-            <option value="otro">Otro</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="fphone">WhatsApp (opcional)</label>
+            <input class="form-input" id="fphone" type="tel" placeholder="+506 0000-0000" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="fservice">Servicio de interés</label>
+            <select class="form-select" id="fservice">
+              <option value="">Selecciona un servicio...</option>
+              <option value="Desarrollo Web">Desarrollo Web</option>
+              <option value="Diseño UI/UX">Diseño UI/UX</option>
+              <option value="Diseño Gráfico">Diseño Gráfico</option>
+              <option value="Landing Page">Landing Page</option>
+              <option value="Optimización / SEO">Optimización / SEO</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
         </div>
         <div class="form-group">
           <label class="form-label" for="fmsg">Mensaje *</label>
@@ -1118,15 +1126,62 @@
   document.querySelectorAll('.stats-row').forEach(el => statsObserver.observe(el));
 
 
-  /* ── Contact form ── */
-  document.getElementById('contactForm').addEventListener('submit', function (e) {
+  /* ── Contact form — EmailJS + CallMeBot ── */
+  const EMAILJS_PUBLIC_KEY  = 'REEMPLAZAR_PUBLIC_KEY';
+  const EMAILJS_SERVICE_ID  = 'REEMPLAZAR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'REEMPLAZAR_TEMPLATE_ID';
+  const CALLMEBOT_PHONE     = '50671058551';
+  const CALLMEBOT_APIKEY    = 'REEMPLAZAR_CALLMEBOT_APIKEY';
+
+  emailjs.init(EMAILJS_PUBLIC_KEY);
+
+  document.getElementById('contactForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    const name = document.getElementById('fname').value.trim();
-    const email = document.getElementById('femail').value.trim();
-    const msg = document.getElementById('fmsg').value.trim();
-    if (!name || !email || !msg) { return; }
-    const wrap = document.getElementById('contactFormWrap');
-    wrap.innerHTML = `
+    const name    = document.getElementById('fname').value.trim();
+    const email   = document.getElementById('femail').value.trim();
+    const phone   = document.getElementById('fphone').value.trim();
+    const service = document.getElementById('fservice').value;
+    const msg     = document.getElementById('fmsg').value.trim();
+    if (!name || !email || !msg) return;
+
+    const btn = this.querySelector('.btn-submit');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="animation:spin .7s linear infinite"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> Enviando...';
+
+    /* 1 ── Construir link de WhatsApp al cliente */
+    const cleanPhone = phone.replace(/\D/g, '');
+    const waText = encodeURIComponent(
+      `Hola ${name}! Vi tu mensaje en mi portafolio sobre "${service || 'tu proyecto'}". ¿Cuándo podemos hablar?`
+    );
+    const waClientLink = cleanPhone
+      ? `https://wa.me/${cleanPhone}?text=${waText}`
+      : 'El cliente no proporcionó número de WhatsApp.';
+
+    /* 2 ── Enviar email vía EmailJS */
+    try {
+      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        from_name:       name,
+        from_email:      email,
+        from_phone:      phone || 'No proporcionado',
+        service_interest: service || 'No especificado',
+        message:         msg,
+        whatsapp_link:   waClientLink,
+      });
+    } catch (err) { console.error('EmailJS:', err); }
+
+    /* 3 ── Notificación WhatsApp vía CallMeBot */
+    const notif = encodeURIComponent(
+      `🔔 Nuevo contacto en favs-dev!\n👤 ${name}\n📧 ${email}${phone ? '\n📱 ' + phone : ''}\n💼 ${service || 'No especificado'}\n📝 ${msg.length > 120 ? msg.slice(0, 120) + '...' : msg}`
+    );
+    try {
+      await fetch(
+        `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${notif}&apikey=${CALLMEBOT_APIKEY}`,
+        { mode: 'no-cors' }
+      );
+    } catch (err) { console.error('CallMeBot:', err); }
+
+    /* 4 ── Mostrar éxito */
+    document.getElementById('contactFormWrap').innerHTML = `
       <div class="form-success">
         <div class="check">✓</div>
         <h4>¡Mensaje enviado!</h4>
