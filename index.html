@@ -1130,8 +1130,6 @@
   const EMAILJS_PUBLIC_KEY  = '6Hhe4eHQWvwsShxdQ';
   const EMAILJS_SERVICE_ID  = 'service_ki1hcr8';
   const EMAILJS_TEMPLATE_ID = 'template_cywrwu8';
-  const CALLMEBOT_PHONE     = '50671058551';
-  const CALLMEBOT_APIKEY    = 'REEMPLAZAR_CALLMEBOT_APIKEY';
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
@@ -1169,16 +1167,20 @@
       });
     } catch (err) { console.error('EmailJS:', err); }
 
-    /* 3 ── Notificación WhatsApp vía CallMeBot */
-    const notif = encodeURIComponent(
-      `🔔 Nuevo contacto en favs-dev!\n👤 ${name}\n📧 ${email}${phone ? '\n📱 ' + phone : ''}\n💼 ${service || 'No especificado'}\n📝 ${msg.length > 120 ? msg.slice(0, 120) + '...' : msg}`
-    );
+    /* 3 ── Notificación WhatsApp vía Twilio (Netlify Function) */
     try {
-      await fetch(
-        `https://api.callmebot.com/whatsapp.php?phone=${CALLMEBOT_PHONE}&text=${notif}&apikey=${CALLMEBOT_APIKEY}`,
-        { mode: 'no-cors' }
-      );
-    } catch (err) { console.error('CallMeBot:', err); }
+      await fetch('/.netlify/functions/whatsapp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre:   name,
+          email:    email,
+          telefono: phone,
+          servicio: service,
+          mensaje:  msg,
+        }),
+      });
+    } catch (err) { console.error('WhatsApp function:', err); }
 
     /* 4 ── Mostrar éxito */
     document.getElementById('contactFormWrap').innerHTML = `
