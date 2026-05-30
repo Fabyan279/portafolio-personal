@@ -1,14 +1,13 @@
+functionsDirectory = "C:\\Users\\Fabian\\OneDrive\\Escritorio\\Proyecto paginas web\\netlify\\functions"
+functionsDirectoryOrigin = "config"
 plugins = []
 headers = []
 redirects = []
 
-[functions]
-
-[functions."*"]
-
 [build]
 publish = "C:\\Users\\Fabian\\OneDrive\\Escritorio\\Proyecto paginas web"
 publishOrigin = "default"
+functions = "C:\\Users\\Fabian\\OneDrive\\Escritorio\\Proyecto paginas web\\netlify\\functions"
 
 [build.environment]
 
@@ -23,3 +22,8 @@ publishOrigin = "default"
 [build.processing.js]
 
 [build.services]
+
+[functions]
+
+[functions."*"]
+node_bundler = "esbuild"
