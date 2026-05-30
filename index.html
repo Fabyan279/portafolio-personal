@@ -220,6 +220,139 @@
     @keyframes fadeSlideDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
+    /* ─── Mini IDE ─── */
+    .ide-hint {
+      position: absolute; bottom: -36px; left: 50%; transform: translateX(-50%);
+      font-size: .72rem; color: var(--accent2); white-space: nowrap;
+      opacity: 0; transition: opacity .25s;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .about-avatar:hover .ide-hint { opacity: 1; }
+    .about-avatar { cursor: pointer; }
+
+    #ideOverlay {
+      display: none; position: fixed; inset: 0; z-index: 10000;
+      background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    #ideOverlay.open { display: flex; animation: fadeSlideDown .25s ease; }
+
+    #ideWindow {
+      width: 100%; max-width: 900px; height: 85vh; max-height: 680px;
+      background: #1e1e2e; border-radius: 12px; overflow: hidden;
+      display: flex; flex-direction: column;
+      border: 1px solid rgba(108,99,255,.3);
+      box-shadow: 0 40px 100px rgba(0,0,0,.7);
+    }
+
+    /* Title bar */
+    .ide-bar {
+      display: flex; align-items: center; gap: .8rem;
+      background: #181825; padding: .6rem 1rem;
+      border-bottom: 1px solid #313244; flex-shrink: 0;
+    }
+    .ide-dots { display: flex; gap: 6px; }
+    .ide-dot { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
+    .ide-dot-r { background: #ff5f57; }
+    .ide-dot-y { background: #febc2e; }
+    .ide-dot-g { background: #28c840; }
+    .ide-dot-r:hover { filter: brightness(.8); }
+    .ide-tab {
+      background: #1e1e2e; color: #cdd6f4; font-size: .78rem;
+      padding: .3rem .9rem; border-radius: 6px 6px 0 0;
+      font-family: 'JetBrains Mono', monospace;
+      border-top: 1px solid var(--accent); border-bottom: none;
+      margin-left: .4rem;
+    }
+    .ide-run {
+      margin-left: auto; background: #a6e3a1; color: #1e1e2e;
+      border: none; border-radius: 6px; padding: .35rem .9rem;
+      font-size: .8rem; font-weight: 700; cursor: pointer;
+      font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: .4rem;
+      transition: opacity .2s;
+    }
+    .ide-run:hover { opacity: .85; }
+    .ide-close-btn {
+      background: none; border: none; color: #6c7086; cursor: pointer;
+      font-size: 1rem; padding: .2rem .4rem; border-radius: 4px;
+      transition: color .2s;
+    }
+    .ide-close-btn:hover { color: #f38ba8; }
+
+    /* Editor area */
+    .ide-editor-wrap {
+      display: flex; flex: 1; overflow: hidden; min-height: 0;
+    }
+    .ide-lines {
+      background: #181825; color: #45475a; font-size: .82rem;
+      line-height: 1.6; padding: .8rem .5rem .8rem .8rem;
+      font-family: 'JetBrains Mono', monospace;
+      user-select: none; text-align: right; min-width: 42px;
+      overflow: hidden; flex-shrink: 0; border-right: 1px solid #313244;
+    }
+    .ide-code-area { position: relative; flex: 1; overflow: hidden; }
+    .ide-highlight {
+      position: absolute; inset: 0;
+      padding: .8rem; margin: 0;
+      font-family: 'JetBrains Mono', monospace; font-size: .82rem;
+      line-height: 1.6; overflow: auto;
+      white-space: pre; word-break: break-all;
+      pointer-events: none; color: #cdd6f4;
+    }
+    .ide-textarea {
+      position: absolute; inset: 0;
+      background: transparent; border: none; outline: none; resize: none;
+      color: transparent; caret-color: #cdd6f4;
+      padding: .8rem; margin: 0;
+      font-family: 'JetBrains Mono', monospace; font-size: .82rem;
+      line-height: 1.6; z-index: 1; overflow: auto;
+      white-space: pre;
+    }
+    /* Syntax colors */
+    .sc { color: #6c7086; font-style: italic; } /* comment */
+    .st { color: #f38ba8; } /* tag/keyword */
+    .sa { color: #89b4fa; } /* attribute */
+    .sv { color: #fab387; } /* string value */
+    .sk { color: #cba6f7; } /* JS keyword */
+    .sn { color: #a6e3a1; } /* number */
+    .sp { color: #89dceb; } /* property */
+
+    /* Output panel */
+    .ide-output {
+      flex-shrink: 0; height: 200px; border-top: 1px solid #313244;
+      display: flex; flex-direction: column; background: #181825;
+    }
+    .ide-out-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid #313244; flex-shrink: 0;
+    }
+    .ide-out-tab {
+      padding: .35rem 1rem; font-size: .75rem; font-weight: 600;
+      color: #6c7086; cursor: pointer; border-bottom: 2px solid transparent;
+      font-family: 'JetBrains Mono', monospace; transition: color .2s;
+      background: none; border-top: none; border-left: none; border-right: none;
+    }
+    .ide-out-tab.active { color: #cdd6f4; border-bottom-color: var(--accent); }
+    #idePreviewPanel, #ideConsolePanel {
+      flex: 1; overflow: auto;
+    }
+    #idePreviewPanel { background: #fff; }
+    #idePreviewFrame { width: 100%; height: 100%; border: none; }
+    #ideConsolePanel {
+      padding: .6rem .8rem; font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem; color: #a6e3a1; background: #11111b;
+    }
+    .con-line { line-height: 1.7; }
+    .con-line.err { color: #f38ba8; }
+    .con-empty { color: #45475a; }
+
+    /* Statusbar */
+    .ide-statusbar {
+      display: flex; justify-content: space-between; align-items: center;
+      background: #6c63ff; padding: .15rem .8rem;
+      font-size: .68rem; color: #fff; font-family: 'JetBrains Mono', monospace;
+      flex-shrink: 0;
+    }
+
     /* ─── Skill tooltip ─── */
     .skill-pill { position: relative; cursor: pointer; }
     .skill-pill .pill-tip {
@@ -734,7 +867,7 @@
 <section id="sobre">
   <div class="about-grid">
     <div class="about-avatar-wrap reveal">
-      <div class="about-avatar">
+      <div class="about-avatar" onclick="document.getElementById('ideOverlay').classList.add('open')">
         <div class="about-avatar-glow"></div>
         <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 24px rgba(108,99,255,.5))">
           <path d="M38 28L16 55L38 82" stroke="#6c63ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
@@ -745,6 +878,7 @@
           <div class="dot"></div>
           Disponible
         </div>
+        <div class="ide-hint">▶ Abrir editor</div>
       </div>
     </div>
     <div class="about-text reveal reveal-delay-1">
@@ -1123,6 +1257,54 @@
   </div>
 </footer>
 
+<!-- ─── Mini IDE Modal ─── -->
+<div id="ideOverlay" onclick="if(event.target===this)closeIde()">
+  <div id="ideWindow">
+
+    <div class="ide-bar">
+      <div class="ide-dots">
+        <div class="ide-dot ide-dot-r" onclick="closeIde()" title="Cerrar"></div>
+        <div class="ide-dot ide-dot-y"></div>
+        <div class="ide-dot ide-dot-g" onclick="runCode()" title="Ejecutar"></div>
+      </div>
+      <div class="ide-tab">index.html</div>
+      <button class="ide-run" onclick="runCode()">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        Ejecutar
+      </button>
+      <button class="ide-close-btn" onclick="closeIde()">✕</button>
+    </div>
+
+    <div class="ide-editor-wrap">
+      <div class="ide-lines" id="ideLines">1</div>
+      <div class="ide-code-area">
+        <pre class="ide-highlight" id="ideHighlight" aria-hidden="true"></pre>
+        <textarea class="ide-textarea" id="ideEditor" spellcheck="false"
+          oninput="syncEditor()" onscroll="syncScroll()" onkeydown="handleKey(event)"></textarea>
+      </div>
+    </div>
+
+    <div class="ide-output">
+      <div class="ide-out-tabs">
+        <button class="ide-out-tab active" id="tabPreview" onclick="switchTab('preview')">Vista previa</button>
+        <button class="ide-out-tab" id="tabConsole" onclick="switchTab('console')">Consola</button>
+      </div>
+      <div id="idePreviewPanel">
+        <iframe id="idePreviewFrame" sandbox="allow-scripts allow-same-origin"></iframe>
+      </div>
+      <div id="ideConsolePanel" style="display:none">
+        <div id="ideConsoleOut"><div class="con-empty">// La salida de console.log aparece aquí</div></div>
+      </div>
+    </div>
+
+    <div class="ide-statusbar">
+      <span>favs.dev IDE · HTML / CSS / JS</span>
+      <span>Ctrl+Enter para ejecutar</span>
+    </div>
+
+  </div>
+</div>
+
 <!-- WhatsApp float -->
 <a href="https://wa.me/50671058551" target="_blank" class="wa-float" title="Contactar por WhatsApp" aria-label="WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
@@ -1238,6 +1420,142 @@
       ham.setAttribute('aria-expanded', 'false');
     });
   });
+
+  /* ── Mini IDE ── */
+  const IDE_DEFAULT = `<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+    h1 { color: #6c63ff; }
+    button {
+      background: #6c63ff;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 12px;
+    }
+    #out { color: #a6e3a1; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <h1>Hola mundo! 👋</h1>
+  <p>¡Bienvenido al editor de favs.dev!</p>
+  <button onclick="saludar()">Hacer algo</button>
+  <div id="out"></div>
+  <script>
+    function saludar() {
+      document.getElementById('out').textContent = '¡Funciona! 🚀';
+      console.log('Botón presionado');
+    }
+  <\/script>
+</body>
+</html>`;
+
+  const ideEditor    = document.getElementById('ideEditor');
+  const ideHighlight = document.getElementById('ideHighlight');
+  const ideLines     = document.getElementById('ideLines');
+  const ideConsoleOut= document.getElementById('ideConsoleOut');
+
+  ideEditor.value = IDE_DEFAULT;
+  syncEditor();
+
+  function highlight(code) {
+    let h = code
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Comments
+    h = h.replace(/(&lt;!--[\s\S]*?--&gt;)/g,'<span class="sc">$1</span>');
+    // DOCTYPE
+    h = h.replace(/(&lt;!DOCTYPE[^&\n]*&gt;)/gi,'<span class="st">$1</span>');
+    // Tags
+    h = h.replace(/(&lt;\/?)([\w-]+)/g,'<span class="st">$1$2</span>');
+    // Attributes
+    h = h.replace(/\s([\w-:@]+)(?=\s*=)/g,' <span class="sa">$1</span>');
+    // String values in quotes
+    h = h.replace(/"([^"]*)"/g,'"<span class="sv">$1</span>"');
+    // CSS/JS inside style/script (basic)
+    h = h.replace(/\b(function|var|let|const|return|if|else|for|while|class|new|this|typeof|null|undefined|true|false|import|export|default)\b/g,'<span class="sk">$1</span>');
+    h = h.replace(/\b(\d+\.?\d*)\b/g,'<span class="sn">$1</span>');
+    return h;
+  }
+
+  function syncEditor() {
+    const val = ideEditor.value;
+    ideHighlight.innerHTML = highlight(val) + '\n';
+    // Line numbers
+    const lines = val.split('\n').length;
+    ideLines.innerHTML = Array.from({length: lines}, (_,i) => i+1).join('\n');
+  }
+
+  function syncScroll() {
+    ideHighlight.scrollTop  = ideEditor.scrollTop;
+    ideHighlight.scrollLeft = ideEditor.scrollLeft;
+    ideLines.scrollTop      = ideEditor.scrollTop;
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const s = ideEditor.selectionStart, end = ideEditor.selectionEnd;
+      ideEditor.value = ideEditor.value.slice(0,s) + '  ' + ideEditor.value.slice(end);
+      ideEditor.selectionStart = ideEditor.selectionEnd = s + 2;
+      syncEditor();
+    }
+    if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); runCode(); }
+  }
+
+  function switchTab(tab) {
+    document.getElementById('idePreviewPanel').style.display = tab === 'preview' ? 'block' : 'none';
+    document.getElementById('ideConsolePanel').style.display = tab === 'console'  ? 'block' : 'none';
+    document.getElementById('tabPreview').classList.toggle('active', tab === 'preview');
+    document.getElementById('tabConsole').classList.toggle('active', tab === 'console');
+  }
+
+  function closeIde() { document.getElementById('ideOverlay').classList.remove('open'); }
+
+  window.addEventListener('message', e => {
+    if (!e.data || !e.data.ideMsg) return;
+    const div = document.getElementById('ideConsoleOut');
+    const line = document.createElement('div');
+    line.className = 'con-line' + (e.data.type === 'err' ? ' err' : '');
+    line.textContent = (e.data.type === 'err' ? '✖ ' : '› ') + e.data.msg;
+    if (div.querySelector('.con-empty')) div.innerHTML = '';
+    div.appendChild(line);
+    switchTab('console');
+  });
+
+  function runCode() {
+    const code = ideEditor.value;
+    ideConsoleOut.innerHTML = '<div class="con-empty">// Ejecutando...</div>';
+    const intercept = `<script>
+(function(){
+  var _l=console.log,_e=console.error,_w=console.warn;
+  function _s(a){return Array.from(a).map(function(x){return typeof x==='object'?JSON.stringify(x):String(x);}).join(' ');}
+  console.log=function(){window.parent.postMessage({ideMsg:1,type:'log',msg:_s(arguments)},'*');_l.apply(console,arguments);};
+  console.error=function(){window.parent.postMessage({ideMsg:1,type:'err',msg:_s(arguments)},'*');_e.apply(console,arguments);};
+  console.warn=function(){window.parent.postMessage({ideMsg:1,type:'log',msg:'⚠ '+_s(arguments)},'*');_w.apply(console,arguments);};
+  window.onerror=function(m,s,l){window.parent.postMessage({ideMsg:1,type:'err',msg:'Línea '+l+': '+m},'*');return true;};
+})();
+<\/script>`;
+    const frame = document.getElementById('idePreviewFrame');
+    frame.srcdoc = intercept + code;
+    switchTab('preview');
+  }
+
+  runCode();
 
   /* ── Skill pill tooltips ── */
   document.querySelectorAll('.skill-pill').forEach(pill => {
