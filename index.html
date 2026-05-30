@@ -87,10 +87,11 @@
     .hamburger {
       display: none; flex-direction: column; gap: 5px; cursor: pointer;
       padding: 10px; margin: -10px;
+      background: none; border: none; outline: none;
       touch-action: manipulation; -webkit-tap-highlight-color: transparent;
       z-index: 101; position: relative;
     }
-    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; display: block; }
+    .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; display: block; pointer-events: none; }
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
@@ -625,9 +626,9 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <a href="#contacto" class="nav-cta">Contrátame</a>
-  <div class="hamburger" id="hamburger">
+  <button class="hamburger" id="hamburger" aria-label="Menú" aria-expanded="false">
     <span></span><span></span><span></span>
-  </div>
+  </button>
 </nav>
 
 <!-- ─── Hero ─── -->
@@ -1106,11 +1107,17 @@
   /* ── Hamburger ── */
   const ham = document.getElementById('hamburger');
   const navLinks = document.getElementById('navLinks');
-  function toggleMenu(e) { e.preventDefault(); e.stopPropagation(); ham.classList.toggle('open'); navLinks.classList.toggle('open'); }
-  ham.addEventListener('click', toggleMenu);
-  ham.addEventListener('touchend', toggleMenu, { passive: false });
+  ham.addEventListener('click', () => {
+    const isOpen = ham.classList.toggle('open');
+    navLinks.classList.toggle('open', isOpen);
+    ham.setAttribute('aria-expanded', isOpen);
+  });
   navLinks.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => { ham.classList.remove('open'); navLinks.classList.remove('open'); });
+    a.addEventListener('click', () => {
+      ham.classList.remove('open');
+      navLinks.classList.remove('open');
+      ham.setAttribute('aria-expanded', 'false');
+    });
   });
 
   /* ── Scroll reveal ── */
