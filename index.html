@@ -289,24 +289,25 @@
       font-family: 'JetBrains Mono', monospace;
       user-select: none; text-align: right; min-width: 42px;
       overflow: hidden; flex-shrink: 0; border-right: 1px solid #313244;
+      white-space: pre;
     }
-    .ide-code-area { position: relative; flex: 1; overflow: hidden; }
+    .ide-code-area { position: relative; flex: 1; overflow: hidden; display: flex; flex-direction: column; }
     .ide-highlight {
       position: absolute; inset: 0;
       padding: .8rem; margin: 0;
       font-family: 'JetBrains Mono', monospace; font-size: .82rem;
-      line-height: 1.6; overflow: auto;
-      white-space: pre; word-break: break-all;
-      pointer-events: none; color: #cdd6f4;
+      line-height: 1.6; overflow: hidden;
+      white-space: pre; pointer-events: none;
+      color: transparent;
     }
     .ide-textarea {
-      position: absolute; inset: 0;
-      background: transparent; border: none; outline: none; resize: none;
-      color: transparent; caret-color: #cdd6f4;
+      flex: 1; width: 100%;
+      background: #1e1e2e; border: none; outline: none; resize: none;
+      color: #cdd6f4; caret-color: #cdd6f4;
       padding: .8rem; margin: 0;
       font-family: 'JetBrains Mono', monospace; font-size: .82rem;
-      line-height: 1.6; z-index: 1; overflow: auto;
-      white-space: pre;
+      line-height: 1.6; overflow: auto;
+      white-space: pre; tab-size: 2;
     }
     /* Syntax colors */
     .sc { color: #6c7086; font-style: italic; } /* comment */
@@ -1280,7 +1281,7 @@
       <div class="ide-code-area">
         <pre class="ide-highlight" id="ideHighlight" aria-hidden="true"></pre>
         <textarea class="ide-textarea" id="ideEditor" spellcheck="false"
-          oninput="syncEditor()" onscroll="syncScroll()" onkeydown="handleKey(event)"></textarea>
+          oninput="updateLines()" onscroll="syncScroll()" onkeydown="handleKey(event)"></textarea>
       </div>
     </div>
 
@@ -1471,40 +1472,18 @@
   const ideConsoleOut= document.getElementById('ideConsoleOut');
 
   ideEditor.value = IDE_DEFAULT;
-  syncEditor();
+  updateLines();
 
-  function highlight(code) {
-    let h = code
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    // Comments
-    h = h.replace(/(&lt;!--[\s\S]*?--&gt;)/g,'<span class="sc">$1</span>');
-    // DOCTYPE
-    h = h.replace(/(&lt;!DOCTYPE[^&\n]*&gt;)/gi,'<span class="st">$1</span>');
-    // Tags
-    h = h.replace(/(&lt;\/?)([\w-]+)/g,'<span class="st">$1$2</span>');
-    // Attributes
-    h = h.replace(/\s([\w-:@]+)(?=\s*=)/g,' <span class="sa">$1</span>');
-    // String values in quotes
-    h = h.replace(/"([^"]*)"/g,'"<span class="sv">$1</span>"');
-    // CSS/JS inside style/script (basic)
-    h = h.replace(/\b(function|var|let|const|return|if|else|for|while|class|new|this|typeof|null|undefined|true|false|import|export|default)\b/g,'<span class="sk">$1</span>');
-    h = h.replace(/\b(\d+\.?\d*)\b/g,'<span class="sn">$1</span>');
-    return h;
-  }
-
-  function syncEditor() {
-    const val = ideEditor.value;
-    ideHighlight.innerHTML = highlight(val) + '\n';
-    // Line numbers
-    const lines = val.split('\n').length;
-    ideLines.innerHTML = Array.from({length: lines}, (_,i) => i+1).join('\n');
+  function updateLines() {
+    const lines = ideEditor.value.split('\n').length;
+    ideLines.textContent = Array.from({length: lines}, (_,i) => i+1).join('\n');
   }
 
   function syncScroll() {
-    ideHighlight.scrollTop  = ideEditor.scrollTop;
-    ideHighlight.scrollLeft = ideEditor.scrollLeft;
-    ideLines.scrollTop      = ideEditor.scrollTop;
+    ideLines.scrollTop = ideEditor.scrollTop;
   }
+
+  function syncEditor() { updateLines(); }
 
   function handleKey(e) {
     if (e.key === 'Tab') {
