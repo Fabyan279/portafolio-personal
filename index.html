@@ -101,8 +101,9 @@
         transform: translateY(-120%); opacity: 0;
         transition: transform .35s, opacity .35s;
         border-bottom: 1px solid var(--border);
+        z-index: 99; pointer-events: none;
       }
-      .nav-links.open { transform: translateY(0); opacity: 1; }
+      .nav-links.open { transform: translateY(0); opacity: 1; pointer-events: all; }
       .nav-cta { display: none; }
     }
 
@@ -680,7 +681,11 @@
     <div class="about-avatar-wrap reveal">
       <div class="about-avatar">
         <div class="about-avatar-glow"></div>
-        <span style="filter:drop-shadow(0 4px 16px rgba(108,99,255,.5))">👨‍💻</span>
+        <svg width="110" height="110" viewBox="0 0 110 110" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 24px rgba(108,99,255,.5))">
+          <path d="M38 28L16 55L38 82" stroke="#6c63ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M72 28L94 55L72 82" stroke="#00d4ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M63 20L47 90" stroke="#6c63ff" stroke-width="5" stroke-linecap="round" opacity="0.6"/>
+        </svg>
         <div class="about-badge">
           <div class="dot"></div>
           Disponible
