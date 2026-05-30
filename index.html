@@ -86,10 +86,10 @@
     /* hamburger */
     .hamburger {
       display: none; flex-direction: column; gap: 5px; cursor: pointer;
-      padding: 10px; margin: -10px;
-      background: none; border: none; outline: none;
+      padding: 12px;
+      background: red; border: none; outline: none;
       touch-action: manipulation; -webkit-tap-highlight-color: transparent;
-      z-index: 101; position: relative;
+      z-index: 101; position: relative; border-radius: 6px;
     }
     .hamburger span { width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: all .3s; display: block; pointer-events: none; }
     .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
