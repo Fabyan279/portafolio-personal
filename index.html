@@ -5,6 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Favs Dev | Desarrollo Web Freelance</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230d0d1f'/><polygon points='4,10 4,22 14,16' fill='%236c63ff'/><rect x='17' y='19.5' width='11' height='3' rx='1.5' fill='%2300d4ff'/></svg>"/>
+
+  <!-- SEO -->
+  <meta name="description" content="Fabian Alfaro Monge — Desarrollador Web Freelancer en Costa Rica. Diseño y desarrollo sitios web modernos, landing pages y diseño UI/UX a medida.">
+  <meta name="keywords" content="desarrollador web freelancer, diseño web Costa Rica, HTML CSS JavaScript, UI UX, landing pages, Figma, Photoshop">
+  <meta name="author" content="Fabian Alfaro Monge">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://favs-dev.netlify.app">
+
+  <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://favs-dev.netlify.app">
+  <meta property="og:title" content="Favs Dev | Desarrollo Web Freelance">
+  <meta property="og:description" content="Diseño y desarrollo experiencias digitales que combinan código limpio con diseño visual impactante. Basado en Costa Rica.">
+  <meta property="og:image" content="https://favs-dev.netlify.app/og-preview.png">
+  <meta property="og:locale" content="es_CR">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Favs Dev | Desarrollo Web Freelance">
+  <meta name="twitter:description" content="Diseño y desarrollo experiencias digitales que combinan código limpio con diseño visual impactante.">
+  <meta name="twitter:image" content="https://favs-dev.netlify.app/og-preview.png">
+
+  <!-- Google Analytics — reemplaza G-XXXXXXXXXX con tu Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -787,6 +817,61 @@
     .reveal-delay-2 { transition-delay: .2s; }
     .reveal-delay-3 { transition-delay: .3s; }
 
+    /* ─── Scroll progress bar ─── */
+    #scrollProgress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      z-index: 10001; transition: width .08s linear;
+    }
+
+    /* ─── Back to top ─── */
+    #backToTop {
+      position: fixed; bottom: 6.5rem; right: 2rem; z-index: 98;
+      width: 42px; height: 42px; border-radius: 10px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      color: var(--text-muted); cursor: pointer; font-size: 1.1rem;
+      display: none; align-items: center; justify-content: center;
+      transition: all .25s; box-shadow: 0 4px 16px rgba(0,0,0,.3);
+    }
+    #backToTop.visible { display: flex; }
+    #backToTop:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px); }
+
+    /* ─── Theme toggle button ─── */
+    #themeToggle {
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      width: 36px; height: 36px; border-radius: 8px; cursor: pointer;
+      font-size: 1rem; display: flex; align-items: center; justify-content: center;
+      transition: border-color .25s, color .25s, background .25s;
+      flex-shrink: 0;
+    }
+    #themeToggle:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ─── Light mode ─── */
+    body.light-mode {
+      --bg-0: #f2f2f8;
+      --bg-1: #fafafa;
+      --bg-2: #efefef;
+      --bg-card: #ffffff;
+      --border: rgba(0,0,0,.1);
+      --text: #1a1a2e;
+      --text-muted: #5a5a78;
+      --glow: 0 0 30px rgba(108,99,255,.2);
+    }
+    body.light-mode nav.scrolled { background: rgba(242,242,248,.92); }
+    body.light-mode #hero { background: linear-gradient(160deg,#f2f2f8,#fafafa); }
+    body.light-mode #heroCanvas { opacity: .4; }
+    body.light-mode .about-avatar { background: linear-gradient(135deg,#e8e8f5,#f0f0fa); }
+    body.light-mode .contact-form,
+    body.light-mode .service-card,
+    body.light-mode .about-badge { box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+    body.light-mode .form-input,
+    body.light-mode .form-textarea,
+    body.light-mode .form-select { background: #f0f0f8; color: var(--text); }
+    body.light-mode .browser-chrome,
+    body.light-mode .browser-wrap { background: #e8e8f0; }
+    body.light-mode .site-preview { filter: brightness(.98); }
+    body.light-mode footer { background: #efefef; }
+
     /* ─── Noise overlay ─── */
     body::before {
       content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -800,6 +885,8 @@
 <body>
 
 <!-- ─── Nav ─── -->
+<div id="scrollProgress"></div>
+
 <nav id="navbar">
   <div class="nav-logo">favs<span>.</span>dev</div>
   <ul class="nav-links" id="navLinks">
@@ -808,6 +895,7 @@
     <li><a href="#portafolio">Portafolio</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
+  <button id="themeToggle" aria-label="Cambiar tema" onclick="toggleTheme()">🌙</button>
   <a href="#contacto" class="nav-cta">Contrátame</a>
   <button class="hamburger" id="hamburger" aria-label="Menú" aria-expanded="false" onclick="var m=document.getElementById('navLinks');if(m){m.classList.toggle('open');this.style.background='green';}else{this.style.background='orange';}">
     <span></span><span></span><span></span>
@@ -1306,6 +1394,10 @@
   </div>
 </div>
 
+<button id="backToTop" aria-label="Volver arriba" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <!-- WhatsApp float -->
 <a href="https://wa.me/50671058551" target="_blank" class="wa-float" title="Contactar por WhatsApp" aria-label="WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
@@ -1401,6 +1493,26 @@
     }
     type();
   })();
+
+  /* ── Scroll progress + back to top ── */
+  const scrollBar = document.getElementById('scrollProgress');
+  const backTop   = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    const pct = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+    scrollBar.style.width = pct + '%';
+    backTop.classList.toggle('visible', window.scrollY > 400);
+  });
+
+  /* ── Theme toggle ── */
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light-mode');
+    document.getElementById('themeToggle').textContent = isLight ? '☀️' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  }
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light-mode');
+    document.getElementById('themeToggle').textContent = '☀️';
+  }
 
   /* ── Navbar scroll ── */
   const navbar = document.getElementById('navbar');
