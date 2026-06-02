@@ -872,6 +872,104 @@
     body.light-mode .site-preview { filter: brightness(.98); }
     body.light-mode footer { background: #efefef; }
 
+    /* ─── Proceso ─── */
+    .proceso-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0; margin-top: 4rem; position: relative;
+    }
+    .proceso-grid::before {
+      content: ''; position: absolute; top: 32px; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      opacity: .3;
+    }
+    @media (max-width: 700px) { .proceso-grid::before { display: none; } }
+    .proceso-step {
+      display: flex; flex-direction: column; align-items: center; text-align: center;
+      padding: 0 1.5rem;
+    }
+    .proceso-num {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; font-weight: 900; color: #fff;
+      margin-bottom: 1.2rem; position: relative; z-index: 1;
+      box-shadow: 0 0 0 4px var(--bg-0), 0 0 0 6px var(--border);
+    }
+    .proceso-title { font-size: 1rem; font-weight: 700; margin-bottom: .5rem; }
+    .proceso-desc { color: var(--text-muted); font-size: .85rem; line-height: 1.7; }
+
+    /* ─── Testimonios ─── */
+    .testimonios-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem; margin-top: 4rem;
+    }
+    .testimonio-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem; position: relative;
+      transition: border-color .3s, transform .3s;
+    }
+    .testimonio-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .testimonio-quote {
+      font-size: 3rem; color: var(--accent); line-height: 1;
+      font-family: Georgia, serif; margin-bottom: .5rem;
+    }
+    .testimonio-text {
+      color: var(--text-muted); font-size: .92rem; line-height: 1.8;
+      font-style: italic; margin-bottom: 1.5rem;
+    }
+    .testimonio-author { display: flex; align-items: center; gap: .8rem; }
+    .testimonio-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .testimonio-name { font-weight: 700; font-size: .92rem; }
+    .testimonio-role { font-size: .78rem; color: var(--text-muted); }
+    .testimonio-stars { color: #f59e0b; font-size: .85rem; margin-top: .2rem; }
+
+    /* ─── Precios ─── */
+    .precios-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem; margin-top: 4rem;
+    }
+    .precio-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 20px; padding: 2rem; position: relative;
+      transition: border-color .3s, transform .3s, box-shadow .3s;
+      display: flex; flex-direction: column;
+    }
+    .precio-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,.3); }
+    .precio-card.featured {
+      border-color: var(--accent);
+      background: linear-gradient(135deg, rgba(108,99,255,.08), var(--bg-card));
+    }
+    .precio-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff; font-size: .72rem; font-weight: 700; padding: .3rem .9rem;
+      border-radius: 99px; white-space: nowrap;
+    }
+    .precio-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .precio-name { font-size: 1.1rem; font-weight: 800; margin-bottom: .3rem; }
+    .precio-amount {
+      font-size: 2.2rem; font-weight: 900; margin: .8rem 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .precio-amount span { font-size: 1rem; font-weight: 500; color: var(--text-muted); -webkit-text-fill-color: var(--text-muted); }
+    .precio-desc { color: var(--text-muted); font-size: .85rem; line-height: 1.7; margin-bottom: 1.2rem; }
+    .precio-features { list-style: none; display: flex; flex-direction: column; gap: .5rem; margin-bottom: 1.5rem; flex: 1; }
+    .precio-features li { font-size: .85rem; display: flex; align-items: center; gap: .5rem; }
+    .precio-features li::before { content: '✓'; color: var(--accent2); font-weight: 700; flex-shrink: 0; }
+    .precio-cta {
+      display: block; text-align: center; background: var(--accent); color: #fff;
+      padding: .75rem; border-radius: 10px; font-weight: 700; font-size: .9rem;
+      text-decoration: none; transition: opacity .25s, transform .2s;
+    }
+    .precio-cta:hover { opacity: .85; transform: translateY(-1px); }
+    .precio-note { font-size: .75rem; color: var(--text-muted); text-align: center; margin-top: 1.5rem; }
+
     /* ─── Noise overlay ─── */
     body::before {
       content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
@@ -893,6 +991,7 @@
     <li><a href="#sobre">Sobre mí</a></li>
     <li><a href="#servicios">Servicios</a></li>
     <li><a href="#portafolio">Portafolio</a></li>
+    <li><a href="#precios">Precios</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
   <button id="themeToggle" aria-label="Cambiar tema" onclick="toggleTheme()">🌙</button>
@@ -931,6 +1030,9 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
         </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/fabian-alfaro-4120a43a3/" target="_blank" title="LinkedIn" aria-label="LinkedIn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
       </a>
       <a href="https://www.behance.net/fabianalf" target="_blank" title="Behance" aria-label="Behance">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
@@ -975,17 +1077,18 @@
       <h2 class="section-title">Hola, soy <span style="color:var(--accent)">Fabian</span></h2>
       <div class="divider"></div>
       <p>
-        Soy un <strong>desarrollador web freelancer</strong> apasionado por crear productos digitales que combinan
-        una experiencia de usuario excepcional con código robusto y escalable.
+        Soy <strong>Fabian Alfaro Monge</strong>, desarrollador web freelancer con más de 5 años
+        explorando el mundo del código. Lo que más me apasiona es el <strong>diseño visual</strong> —
+        crear interfaces que se vean increíbles y sean fáciles de usar es lo que me mueve.
       </p>
       <p>
-        Me especializo en el desarrollo de sitios web y aplicaciones desde cero, cuidando cada detalle
-        visual con herramientas de diseño profesional. Mi objetivo es que tu proyecto no solo funcione
-        perfectamente, sino que también <strong>deje una impresión memorable</strong>.
+        Domino tanto el frontend como el backend, pero mi fuerte está en hacer que cada proyecto
+        se vea y se sienta <strong>profesional y único</strong>. Sin plantillas genéricas, sin atajos:
+        cada sitio lo construyo desde cero pensando en tu cliente final.
       </p>
       <p>
-        Trabajo de manera independiente, lo que me permite ofrecerte <strong>atención personalizada</strong>,
-        comunicación directa y resultados alineados exactamente con tu visión.
+        Trabajo con clientes en <strong>Costa Rica y en remoto</strong> para cualquier parte del mundo.
+        Comunicación directa, resultados reales y atención personalizada en cada proyecto.
       </p>
       <div class="skills-grid">
         <span class="skill-pill">HTML5<span class="pill-tip">Lenguaje que estructura el contenido de toda página web.</span></span>
@@ -1000,16 +1103,16 @@
       </div>
       <div class="stats-row">
         <div class="stat">
-          <span class="stat-num" data-count="15">0</span>
+          <span class="stat-num" data-count="3">0</span>
           <span class="stat-label">Proyectos</span>
         </div>
         <div class="stat">
-          <span class="stat-num" data-count="10">0</span>
-          <span class="stat-label">Clientes</span>
+          <span class="stat-num" data-count="5">0</span>
+          <span class="stat-label">Años exp.</span>
         </div>
         <div class="stat">
-          <span class="stat-num" data-count="3">0</span>
-          <span class="stat-label">Años exp.</span>
+          <span class="stat-num" style="-webkit-text-fill-color:unset;background:none;color:var(--accent)">🌎</span>
+          <span class="stat-label">CR + Remoto</span>
         </div>
       </div>
     </div>
@@ -1243,6 +1346,128 @@
 
 </section>
 
+<!-- ─── Proceso ─── -->
+<section id="proceso" style="background:var(--bg-1)">
+  <div class="reveal">
+    <div class="section-label">Proceso</div>
+    <h2 class="section-title">¿Cómo trabajamos juntos?</h2>
+    <div class="divider"></div>
+    <p class="section-sub">Un proceso simple, transparente y sin sorpresas para que tu proyecto salga perfecto.</p>
+  </div>
+  <div class="proceso-grid">
+    <div class="proceso-step reveal">
+      <div class="proceso-num">1</div>
+      <div class="proceso-title">Consulta inicial</div>
+      <div class="proceso-desc">Hablamos por WhatsApp para entender tu proyecto, tus objetivos y tu presupuesto. Sin compromiso.</div>
+    </div>
+    <div class="proceso-step reveal reveal-delay-1">
+      <div class="proceso-num">2</div>
+      <div class="proceso-title">Propuesta</div>
+      <div class="proceso-desc">Te envío una propuesta detallada con el alcance exacto, el tiempo de entrega y el precio final.</div>
+    </div>
+    <div class="proceso-step reveal reveal-delay-2">
+      <div class="proceso-num">3</div>
+      <div class="proceso-title">Diseño y desarrollo</div>
+      <div class="proceso-desc">Empiezo a construir tu proyecto con actualizaciones constantes para que apruebes cada etapa.</div>
+    </div>
+    <div class="proceso-step reveal reveal-delay-3">
+      <div class="proceso-num">4</div>
+      <div class="proceso-title">Entrega y soporte</div>
+      <div class="proceso-desc">Publico tu proyecto y te doy soporte post-lanzamiento para que todo funcione a la perfección.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Testimonios ─── -->
+<section id="testimonios" style="background:var(--bg-0)">
+  <div class="reveal">
+    <div class="section-label">Testimonios</div>
+    <h2 class="section-title">Lo que dicen mis clientes</h2>
+    <div class="divider"></div>
+  </div>
+  <div class="testimonios-grid">
+    <div class="testimonio-card reveal">
+      <div class="testimonio-quote">"</div>
+      <div class="testimonio-text">
+        Muy satisfecho con el resultado. La página quedó exactamente como la quería — muy interactiva
+        y muy sencilla de usar para nuestros clientes. Hicimos ajustes durante el proceso y Fabian
+        siempre estuvo disponible hasta que quedó perfecta.
+      </div>
+      <div class="testimonio-author">
+        <div class="testimonio-avatar">DA</div>
+        <div>
+          <div class="testimonio-name">Danilo Alfaro</div>
+          <div class="testimonio-role">Propietario · Camión Parts Solutions</div>
+          <div class="testimonio-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonio-card reveal reveal-delay-1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border-style:dashed;">
+      <div style="font-size:2.5rem;margin-bottom:1rem;">💬</div>
+      <div style="font-weight:700;margin-bottom:.5rem;">¿Trabajaste conmigo?</div>
+      <div style="color:var(--text-muted);font-size:.88rem;margin-bottom:1.2rem;">Tu opinión ayuda a otros clientes a confiar en mi trabajo.</div>
+      <a href="https://wa.me/50671058551?text=Hola%20Fabian%2C%20quiero%20dejarte%20un%20testimonio" target="_blank" class="btn-primary" style="font-size:.85rem;padding:.65rem 1.4rem;">Dejar reseña</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Precios ─── -->
+<section id="precios" style="background:var(--bg-1)">
+  <div class="reveal">
+    <div class="section-label">Precios</div>
+    <h2 class="section-title">Inversión transparente</h2>
+    <div class="divider"></div>
+    <p class="section-sub">Precios referenciales en USD. Cada proyecto es único — contáctame para un presupuesto exacto.</p>
+  </div>
+  <div class="precios-grid">
+    <div class="precio-card reveal">
+      <div class="precio-icon">🚀</div>
+      <div class="precio-name">Landing Page</div>
+      <div class="precio-amount">$200 <span>– $400</span></div>
+      <div class="precio-desc">Perfecta para presentar tu negocio, producto o servicio y captar clientes.</div>
+      <ul class="precio-features">
+        <li>Diseño visual personalizado</li>
+        <li>100% responsive (móvil)</li>
+        <li>Formulario de contacto</li>
+        <li>Botón WhatsApp directo</li>
+        <li>Optimización básica SEO</li>
+      </ul>
+      <a href="#contacto" class="precio-cta">Solicitar presupuesto</a>
+    </div>
+    <div class="precio-card featured reveal reveal-delay-1">
+      <div class="precio-badge">Más solicitado</div>
+      <div class="precio-icon">🌐</div>
+      <div class="precio-name">Sitio Web Completo</div>
+      <div class="precio-amount">$500 <span>– $1,200</span></div>
+      <div class="precio-desc">Sitio multi-página con diseño profesional, animaciones y todo lo que tu negocio necesita.</div>
+      <ul class="precio-features">
+        <li>Hasta 8 secciones/páginas</li>
+        <li>Diseño UI/UX en Figma</li>
+        <li>Animaciones interactivas</li>
+        <li>Formulario + EmailJS</li>
+        <li>Portafolio o catálogo</li>
+        <li>Publicación incluida</li>
+      </ul>
+      <a href="#contacto" class="precio-cta">Solicitar presupuesto</a>
+    </div>
+    <div class="precio-card reveal reveal-delay-2">
+      <div class="precio-icon">⚙️</div>
+      <div class="precio-name">Proyecto a Medida</div>
+      <div class="precio-amount">$800<span>+</span></div>
+      <div class="precio-desc">Apps de escritorio, sistemas de inventario, e-commerce o cualquier solución personalizada.</div>
+      <ul class="precio-features">
+        <li>Análisis de requerimientos</li>
+        <li>Base de datos incluida</li>
+        <li>Panel de administración</li>
+        <li>Documentación del sistema</li>
+        <li>Soporte post-lanzamiento</li>
+      </ul>
+      <a href="#contacto" class="precio-cta">Solicitar presupuesto</a>
+    </div>
+  </div>
+  <p class="precio-note reveal">* Precios en USD. Acepto pagos por transferencia, PayPal o SINPE Móvil (Costa Rica). Pago 50% al inicio, 50% al finalizar.</p>
+</section>
+
 <!-- ─── Contacto ─── -->
 <section id="contacto">
   <div class="reveal">
@@ -1271,13 +1496,20 @@
       </a>
       <a href="https://github.com/Fabyan279" target="_blank" class="contact-item">
         <div class="contact-item-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)">
-            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
-          </svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:var(--accent)"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844a9.59 9.59 0 0 1 2.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/></svg>
         </div>
         <div>
           <div class="contact-item-label">GitHub</div>
           <div class="contact-item-value">github.com/Fabyan279</div>
+        </div>
+      </a>
+      <a href="https://www.linkedin.com/in/fabian-alfaro-4120a43a3/" target="_blank" class="contact-item">
+        <div class="contact-item-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color:#0077b5"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        </div>
+        <div>
+          <div class="contact-item-label">LinkedIn</div>
+          <div class="contact-item-value">Fabian Alfaro Monge</div>
         </div>
       </a>
       <a href="https://wa.me/50671058551?text=Hola%20Fabian%2C%20vi%20tu%20portafolio%20y%20me%20interesa%20hablar%20sobre%20un%20proyecto." target="_blank" class="wa-cta">
